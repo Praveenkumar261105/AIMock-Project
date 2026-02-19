@@ -1,0 +1,7 @@
+{
+  "name": "Copy of AI Voice Mock Interviewer",
+  "description": "A high-performance mock interview platform using voice interaction to prepare candidates for real-world job interviews.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
