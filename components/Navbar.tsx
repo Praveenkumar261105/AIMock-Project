@@ -1,18 +1,9 @@
-
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { signOut } from 'firebase/auth';
-import { auth } from '../firebase';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar: React.FC = () => {
-  const navigate = useNavigate();
   const { user } = useAuth();
-
-  const handleLogout = async () => {
-    await signOut(auth);
-    navigate('/login');
-  };
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
@@ -23,29 +14,19 @@ const Navbar: React.FC = () => {
               AI Interviewer
             </Link>
           </div>
-          <div className="flex space-x-4 items-center">
+          <div className="flex space-x-6 items-center">
             {user ? (
               <>
-                <Link to="/interview" className="text-gray-600 hover:text-indigo-600 font-medium">Interview</Link>
+                <Link to="/resume-upload" className="text-gray-600 hover:text-indigo-600 font-medium">New Session</Link>
                 <Link to="/history" className="text-gray-600 hover:text-indigo-600 font-medium">History</Link>
-                <div className="flex items-center space-x-3">
-                  <span className="text-sm text-gray-500 hidden md:inline">Hi, {user.displayName || user.email}</span>
-                  <button 
-                    onClick={handleLogout}
-                    className="bg-red-50 text-red-600 px-4 py-2 rounded-lg font-medium hover:bg-red-100 transition-colors"
-                  >
-                    Logout
-                  </button>
+                <div className="flex items-center space-x-3 bg-indigo-50 px-3 py-1.5 rounded-full">
+                  <div className="w-6 h-6 bg-indigo-600 rounded-full flex items-center justify-center text-[10px] text-white font-bold">
+                    {user.name.charAt(0)}
+                  </div>
+                  <span className="text-sm font-medium text-indigo-700">{user.name}</span>
                 </div>
               </>
-            ) : (
-              <>
-                <Link to="/login" className="text-gray-600 hover:text-indigo-600 font-medium">Login</Link>
-                <Link to="/register" className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors">
-                  Register
-                </Link>
-              </>
-            )}
+            ) : null}
           </div>
         </div>
       </div>

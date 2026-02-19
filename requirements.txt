@@ -1,0 +1,15 @@
+
+fastapi
+uvicorn
+sqlalchemy
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
+pdfplumber
+openai-whisper
+torch
+TTS
+chromadb
+requests
+python-dotenv
+firebase-admin

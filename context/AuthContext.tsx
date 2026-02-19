@@ -1,30 +1,54 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '../firebase';
+interface User {
+  email: string;
+  name: string;
+  uid: string;
+}
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  logout: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
+const AuthContext = createContext<AuthContextType>({ 
+  user: null, 
+  loading: false,
+  logout: async () => {}
+});
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  // Initialize with guest user and set token immediately
+  const [user, setUser] = useState<User | null>(() => {
+    const guest = {
+      email: 'guest@example.com',
+      name: 'Guest Candidate',
+      uid: 'guest-123'
+    };
+    localStorage.setItem('token', 'guest-token');
+    return guest;
+  });
+  
+  const [loading] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
+    // Keep sync in case user state changes externally
+    if (user) {
+      localStorage.setItem('token', 'guest-token');
+    } else {
+      localStorage.removeItem('token');
+    }
+  }, [user]);
+
+  const logout = async () => {
+    setUser(null);
+    localStorage.removeItem('token');
+  };
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
-      {!loading && children}
+    <AuthContext.Provider value={{ user, loading, logout }}>
+      {children}
     </AuthContext.Provider>
   );
 };

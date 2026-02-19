@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../firebase';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -17,8 +17,9 @@ const Register: React.FC = () => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       await updateProfile(userCredential.user, { displayName: formData.name });
-      navigate('/login');
+      navigate('/resume-upload');
     } catch (err: any) {
+      console.error(err);
       setError(err.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);

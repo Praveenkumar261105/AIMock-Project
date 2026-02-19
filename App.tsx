@@ -1,10 +1,7 @@
-
 import React from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
-import Login from './pages/Login';
-import Register from './pages/Register';
 import ResumeUpload from './pages/ResumeUpload';
 import Interview from './pages/Interview';
 import Result from './pages/Result';
@@ -19,8 +16,7 @@ const App: React.FC = () => {
           <Navbar />
           <main className="max-w-7xl mx-auto py-8">
             <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+              {/* Login and Register routes removed as per request */}
               
               <Route path="/resume-upload" element={
                 <ProtectedRoute>
@@ -47,6 +43,7 @@ const App: React.FC = () => {
               } />
               
               <Route path="/" element={<Navigate to="/resume-upload" replace />} />
+              <Route path="*" element={<Navigate to="/resume-upload" replace />} />
             </Routes>
           </main>
         </div>

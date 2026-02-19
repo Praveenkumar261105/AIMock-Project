@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -18,8 +18,8 @@ const Login: React.FC = () => {
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
       navigate('/resume-upload');
     } catch (err: any) {
-      setError('Invalid email or password. Please try again.');
       console.error(err);
+      setError('Invalid email or password.');
     } finally {
       setLoading(false);
     }
